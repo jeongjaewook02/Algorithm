@@ -5,19 +5,20 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f4f4f4;
-  }
+    background-color: #f5f5dc; /* 연한 베이지색으로 바꿈 */
+}
   
-  .game-container {
+.game-container {
     text-align: center;
-  }
+}
   
-  canvas {
+canvas {
     border: 1px solid #000;
     cursor: pointer;
-  }
+    background-color: #f0e4d7; /* 바둑판 배경도 따뜻한 톤으로 설정 */
+}
   
-  #status {
+#status {
     margin-top: 20px;
     font-size: 18px;
-  }
+}
