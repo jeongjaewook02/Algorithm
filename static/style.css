@@ -1,24 +1,39 @@
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f5f5dc; /* 연한 베이지색으로 바꿈 */
+  font-family: Arial, sans-serif;
+  background-color: #f5f5dc;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
-  
-.game-container {
-    text-align: center;
+
+.screen {
+  text-align: center;
 }
-  
+
 canvas {
-    border: 1px solid #000;
-    cursor: pointer;
-    background-color: #f0e4d7; /* 바둑판 배경도 따뜻한 톤으로 설정 */
+  border: 1px solid #000;
+  cursor: pointer;
+  background-color: #f0e4d7;
 }
-  
+
 #status {
-    margin-top: 20px;
-    font-size: 18px;
+  margin-top: 15px;
+  font-size: 18px;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  background-color: #ffffff;
+}
+
+button:hover {
+  transform: translateY(-2px);
 }

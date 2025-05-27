@@ -1,10 +1,16 @@
+// script.js : 보드 그리기 및 게임 흐름
 const canvas = document.getElementById('gameBoard');
 const ctx = canvas.getContext('2d');
 const boardSize = 15;
 const cellSize = 40;
-let board = Array(boardSize).fill().map(() => Array(boardSize).fill(0));
-let currentPlayer = 1;
-let gameOver = false;
+
+let board, currentPlayer, gameOver;
+
+const initBoard = () => {
+  board = Array.from({ length: boardSize }, () => Array(boardSize).fill(0));
+  currentPlayer = 1; // 1: 흑(플레이어), 2: 백(컴퓨터)
+  gameOver = false;
+};
 
 const drawBoard = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -30,68 +36,87 @@ const drawBoard = () => {
   }
 };
 
-const handleClick = (event) => {
-  if (gameOver) return;
-
-  const x = Math.floor(event.offsetX / cellSize);
-  const y = Math.floor(event.offsetY / cellSize);
-
-  if (board[x][y] === 0) {
-    board[x][y] = currentPlayer;
-    drawBoard();
-
-    if (checkWinner(x, y)) {
-      document.getElementById('status').innerText = `${currentPlayer === 1 ? "흑돌" : "백돌"} 승리!`;
-      gameOver = true;
-      return;
-    }
-
-    currentPlayer = currentPlayer === 1 ? 2 : 1;
-    document.getElementById('status').innerText = `${currentPlayer === 1 ? "흑돌" : "백돌"} 차례`;
-
-    if (currentPlayer === 2) {
-      setTimeout(() => {
-        aiMove(); // AI 차례
-      }, 500);
-    }
-  }
-};
-
-canvas.addEventListener('click', handleClick);
-
 const checkWinner = (x, y) => {
   const directions = [
-    [[1, 0], [-1, 0]],  // 가로
-    [[0, 1], [0, -1]],  // 세로
-    [[1, 1], [-1, -1]], // 대각 \
-    [[1, -1], [-1, 1]]  // 대각 /
+    [[1, 0], [-1, 0]],
+    [[0, 1], [0, -1]],
+    [[1, 1], [-1, -1]],
+    [[1, -1], [-1, 1]],
   ];
 
-  for (let dir of directions) {
+  for (const dir of directions) {
     let count = 1;
-
-    for (let [dx, dy] of dir) {
+    for (const [dx, dy] of dir) {
       let nx = x + dx;
       let ny = y + dy;
-      while (nx >= 0 && nx < boardSize && ny >= 0 && ny < boardSize && board[nx][ny] === board[x][y]) {
+      while (
+        nx >= 0 && nx < boardSize && ny >= 0 && ny < boardSize &&
+        board[nx][ny] === board[x][y]
+      ) {
         count++;
         nx += dx;
         ny += dy;
       }
     }
-
     if (count >= 5) return true;
   }
-
   return false;
 };
 
-const resetGame = () => {
-  board = Array(boardSize).fill().map(() => Array(boardSize).fill(0));
-  currentPlayer = 1;
-  gameOver = false;
-  document.getElementById('status').innerText = '흑돌 차례';
+// 화면 요소
+const startScreen = document.getElementById('start-screen');
+const gameScreen = document.getElementById('game-screen');
+const endScreen = document.getElementById('end-screen');
+const statusText = document.getElementById('status');
+const winnerText = document.getElementById('winner-text');
+
+const startGame = () => {
+  initBoard();
   drawBoard();
+  statusText.innerText = '흑돌 차례';
+  startScreen.style.display = 'none';
+  endScreen.style.display = 'none';
+  gameScreen.style.display = 'block';
 };
 
-drawBoard();
+const endGame = (msg) => {
+  gameOver = true;
+  winnerText.innerText = msg;
+  gameScreen.style.display = 'none';
+  endScreen.style.display = 'block';
+};
+
+const restartGame = () => {
+  startScreen.style.display = 'block';
+  endScreen.style.display = 'none';
+  gameScreen.style.display = 'none';
+};
+
+// 플레이어 클릭 이벤트
+canvas.addEventListener('click', (e) => {
+  if (gameOver || currentPlayer !== 1) return;
+
+  const x = Math.floor(e.offsetX / cellSize);
+  const y = Math.floor(e.offsetY / cellSize);
+
+  if (board[x][y] === 0) {
+    board[x][y] = 1;
+    drawBoard();
+
+    if (checkWinner(x, y)) {
+      endGame('흑돌 승리!');
+      return;
+    }
+
+    currentPlayer = 2;
+    statusText.innerText = '백돌 차례';
+    setTimeout(aiMove, 200);
+  }
+});
+
+// 버튼 이벤트
+document.getElementById('startBtn').addEventListener('click', startGame);
+document.getElementById('restartBtn').addEventListener('click', restartGame);
+
+// 초기 보드 설정 (첫 로드 시)
+initBoard();

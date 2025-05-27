@@ -1,16 +1,40 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>오목 게임</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <!-- Flask 정적 파일 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-  <div class="game-container">
+  <!-- ⏯️ 시작 화면 -->
+  <div id="start-screen" class="screen">
     <h1>오목 게임</h1>
+
+    <label for="difficulty">난이도:
+      <select id="difficulty">
+        <option value="easy">하 (깊이 2)</option>
+        <option value="medium" selected>중 (깊이 3)</option>
+        <option value="hard">상 (깊이 4)</option>
+      </select>
+    </label>
+
+    <button id="startBtn">게임 시작</button>
+  </div>
+
+  <!-- 🎲 게임 화면 -->
+  <div id="game-screen" class="screen" style="display:none;">
     <canvas id="gameBoard" width="600" height="600"></canvas>
     <div id="status">흑돌 차례</div>
   </div>
+
+  <!-- 🏆 종료 화면 -->
+  <div id="end-screen" class="screen" style="display:none;">
+    <h1 id="winner-text"></h1>
+    <button id="restartBtn">다시하기</button>
+  </div>
+
+  <!-- 스크립트 로드 (AI → 로직 순) -->
   <script src="{{ url_for('static', filename='ai.js') }}"></script>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
