@@ -14,22 +14,31 @@ const initBoard = () => {
 
 const drawBoard = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // 🔹 바둑판 선 그리기
+  for (let i = 0; i < boardSize; i++) {
+    // 가로줄
+    ctx.beginPath();
+    ctx.moveTo(cellSize / 2, cellSize / 2 + i * cellSize);
+    ctx.lineTo(canvas.width - cellSize / 2, cellSize / 2 + i * cellSize);
+    ctx.stroke();
+
+    // 세로줄
+    ctx.beginPath();
+    ctx.moveTo(cellSize / 2 + i * cellSize, cellSize / 2);
+    ctx.lineTo(cellSize / 2 + i * cellSize, canvas.height - cellSize / 2);
+    ctx.stroke();
+  }
+
+  // 🔹 돌 그리기 (교차점 중심 기준)
   for (let i = 0; i < boardSize; i++) {
     for (let j = 0; j < boardSize; j++) {
-      ctx.beginPath();
-      ctx.rect(i * cellSize, j * cellSize, cellSize, cellSize);
-      ctx.strokeStyle = '#000';
-      ctx.stroke();
-
-      if (board[i][j] === 1) {
+      if (board[i][j] !== 0) {
         ctx.beginPath();
-        ctx.arc(i * cellSize + cellSize / 2, j * cellSize + cellSize / 2, cellSize / 2 - 4, 0, Math.PI * 2);
-        ctx.fillStyle = 'black';
-        ctx.fill();
-      } else if (board[i][j] === 2) {
-        ctx.beginPath();
-        ctx.arc(i * cellSize + cellSize / 2, j * cellSize + cellSize / 2, cellSize / 2 - 4, 0, Math.PI * 2);
-        ctx.fillStyle = 'white';
+        const cx = cellSize / 2 + i * cellSize;
+        const cy = cellSize / 2 + j * cellSize;
+        ctx.arc(cx, cy, cellSize / 2 - 4, 0, Math.PI * 2);
+        ctx.fillStyle = board[i][j] === 1 ? 'black' : 'white';
         ctx.fill();
       }
     }
