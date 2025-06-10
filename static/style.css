@@ -1,3 +1,10 @@
+/* 웹폰트 등록 */
+@font-face {
+  font-family: 'GodoB';
+  src: url('GodoB.ttf') format('truetype');
+}
+
+/* 전체 화면 공통 */
 body {
   font-family: Arial, sans-serif;
   background-color: #f5f5dc;
@@ -6,6 +13,12 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+/* 시작 화면에만 웹폰트 적용 */
+#start-screen {
+  font-family: 'GodoB', sans-serif;
+  font-size: 28px;  /* 🔺 원하는 크기로 조절 (ex: 24px, 28px 등) */
 }
 
 .screen {
